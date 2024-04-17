@@ -1,3 +1,8 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
 local WinterClientScreenGui = Instance.new("ScreenGui")
 local GuiFrame = Instance.new("Frame")
 local NotificaitonFrame = Instance.new("Frame")
@@ -23,7 +28,6 @@ local CombatFrame = Instance.new("Frame")
 local UICorner_5 = Instance.new("UICorner")
 local CombatText = Instance.new("TextLabel")
 local SpeedButton = Instance.new("TextButton")
-local FlyButton = Instance.new("TextButton")
 
 --Properties:
 
@@ -258,23 +262,9 @@ SpeedButton.TextScaled = true
 SpeedButton.TextSize = 14.000
 SpeedButton.TextWrapped = true
 
-FlyButton.Name = "FlyButton"
-FlyButton.Parent = CombatFrame
-FlyButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-FlyButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-FlyButton.BorderSizePixel = 0
-FlyButton.Position = UDim2.new(0.200477347, 0, 0.269754767, 0)
-FlyButton.Size = UDim2.new(0.596658707, 0, 0.0817438662, 0)
-FlyButton.Font = Enum.Font.Cartoon
-FlyButton.Text = "Fly"
-FlyButton.TextColor3 = Color3.fromRGB(151, 151, 151)
-FlyButton.TextScaled = true
-FlyButton.TextSize = 14.000
-FlyButton.TextWrapped = true
-
 -- Scripts:
 
-local function ZAIKK_fake_script() -- WinterClientOpenMenu.LocalScript 
+local function ZHSJ_fake_script() -- WinterClientOpenMenu.LocalScript 
 	local script = Instance.new('LocalScript', WinterClientOpenMenu)
 
 	local button = script.Parent -- Replace with the path to your button
@@ -292,8 +282,8 @@ local function ZAIKK_fake_script() -- WinterClientOpenMenu.LocalScript
 		end
 	end)
 end
-coroutine.wrap(ZAIKK_fake_script)()
-local function RYQKVM_fake_script() -- PlayerLevel50Button.LocalScript 
+coroutine.wrap(ZHSJ_fake_script)()
+local function EARG_fake_script() -- PlayerLevel50Button.LocalScript 
 	local script = Instance.new('LocalScript', PlayerLevel50Button)
 
 	local button = script.Parent
@@ -303,8 +293,8 @@ local function RYQKVM_fake_script() -- PlayerLevel50Button.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(RYQKVM_fake_script)()
-local function BUFQBA_fake_script() -- BodyGuardButton.LocalScript 
+coroutine.wrap(EARG_fake_script)()
+local function AXMRHPC_fake_script() -- BodyGuardButton.LocalScript 
 	local script = Instance.new('LocalScript', BodyGuardButton)
 
 	local button = script.Parent
@@ -322,8 +312,8 @@ local function BUFQBA_fake_script() -- BodyGuardButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(BUFQBA_fake_script)()
-local function UTIJZ_fake_script() -- HostPanelButton.LocalScript 
+coroutine.wrap(AXMRHPC_fake_script)()
+local function IWVXOEL_fake_script() -- HostPanelButton.LocalScript 
 	local script = Instance.new('LocalScript', HostPanelButton)
 
 	local button = script.Parent
@@ -333,8 +323,8 @@ local function UTIJZ_fake_script() -- HostPanelButton.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(UTIJZ_fake_script)()
-local function TXJTFP_fake_script() -- SwordTexturePackButton.LocalScript 
+coroutine.wrap(IWVXOEL_fake_script)()
+local function AUIZFC_fake_script() -- SwordTexturePackButton.LocalScript 
 	local script = Instance.new('LocalScript', SwordTexturePackButton)
 
 	local button = script.Parent
@@ -352,8 +342,8 @@ local function TXJTFP_fake_script() -- SwordTexturePackButton.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(TXJTFP_fake_script)()
-local function LSITBYE_fake_script() -- SpeedButton.LocalScript 
+coroutine.wrap(AUIZFC_fake_script)()
+local function YCHLRLH_fake_script() -- SpeedButton.LocalScript 
 	local script = Instance.new('LocalScript', SpeedButton)
 
 	local button = script.Parent
@@ -365,210 +355,8 @@ local function LSITBYE_fake_script() -- SpeedButton.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(LSITBYE_fake_script)()
-local function MXUQY_fake_script() -- FlyButton.LocalScript 
-	local script = Instance.new('LocalScript', FlyButton)
-
-	local button = script.Parent
-	local player = game.Players.LocalPlayer
-	local hum = player.Character.Humanoid
-	
-	button.MouseButton1Down:Connect(function()
-		local Fly = {Enabled = false}
-		local FlyMode = {Value = "CFrame"}
-		local FlyVerticalSpeed = {Value = 40}
-		local FlyVertical = {Enabled = true}
-		local FlyAutoPop = {Enabled = true}
-		local FlyAnyway = {Enabled = false}
-		local FlyAnywayProgressBar = {Enabled = false}
-		local FlyDamageAnimation = {Enabled = false}
-		local FlyTP = {Enabled = false}
-		local FlyAnywayProgressBarFrame
-		local olddeflate
-		local FlyUp = false
-		local FlyDown = false
-		local FlyCoroutine
-		local groundtime = tick()
-		local onground = false
-		local lastonground = false
-		local alternatelist = {"Normal", "AntiCheat A", "AntiCheat B"}
-	
-		local function inflateBalloon()
-			if not Fly.Enabled then return end
-			if entityLibrary.isAlive and (lplr.Character:GetAttribute("InflatedBalloons") or 0) < 1 then
-				autobankballoon = true
-				if getItem("balloon") then
-					bedwars.BalloonController:inflateBalloon()
-					return true
-				end
-			end
-			return false
-		end
-		olddeflate = bedwars.BalloonController.deflateBalloon
-		bedwars.BalloonController.deflateBalloon = function() end
-	
-		table.insert(Fly.Connections, inputService.InputBegan:Connect(function(input1)
-			if FlyVertical.Enabled and inputService:GetFocusedTextBox() == nil then
-				if input1.KeyCode == Enum.KeyCode.Space or input1.KeyCode == Enum.KeyCode.ButtonA then
-					FlyUp = true
-				end
-				if input1.KeyCode == Enum.KeyCode.LeftShift or input1.KeyCode == Enum.KeyCode.ButtonL2 then
-					FlyDown = true
-				end
-			end
-		end))
-		table.insert(Fly.Connections, inputService.InputEnded:Connect(function(input1)
-			if input1.KeyCode == Enum.KeyCode.Space or input1.KeyCode == Enum.KeyCode.ButtonA then
-				FlyUp = false
-			end
-			if input1.KeyCode == Enum.KeyCode.LeftShift or input1.KeyCode == Enum.KeyCode.ButtonL2 then
-				FlyDown = false
-			end
-		end))
-		if inputService.TouchEnabled then
-			pcall(function()
-				local jumpButton = lplr.PlayerGui.TouchGui.TouchControlFrame.JumpButton
-				table.insert(Fly.Connections, jumpButton:GetPropertyChangedSignal("ImageRectOffset"):Connect(function()
-					FlyUp = jumpButton.ImageRectOffset.X == 146
-				end))
-				FlyUp = jumpButton.ImageRectOffset.X == 146
-			end)
-		end
-		table.insert(Fly.Connections, vapeEvents.BalloonPopped.Event:Connect(function(poppedTable)
-			if poppedTable.inflatedBalloon and poppedTable.inflatedBalloon:GetAttribute("BalloonOwner") == lplr.UserId then
-				lastonground = not onground
-				repeat task.wait() until (lplr.Character:GetAttribute("InflatedBalloons") or 0) <= 0 or not Fly.Enabled
-				inflateBalloon()
-			end
-		end))
-		table.insert(Fly.Connections, vapeEvents.AutoBankBalloon.Event:Connect(function()
-			repeat task.wait() until getItem("balloon")
-			inflateBalloon()
-		end))
-	
-		local balloons
-		if entityLibrary.isAlive and (not store.queueType:find("mega")) then
-			balloons = inflateBalloon()
-		end
-		local megacheck = store.queueType:find("mega") or store.queueType == "winter_event"
-	
-		task.spawn(function()
-			repeat task.wait() until store.queueType ~= "bedwars_test" or (not Fly.Enabled)
-			if not Fly.Enabled then return end
-			megacheck = store.queueType:find("mega") or store.queueType == "winter_event"
-		end)
-	
-		local flyAllowed = entityLibrary.isAlive and ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
-		if flyAllowed <= 0 and shared.damageanim and (not balloons) then
-			shared.damageanim()
-			bedwars.SoundManager:playSound(bedwars.SoundList["DAMAGE_"..math.random(1, 3)])
-		end
-	
-		if FlyAnywayProgressBarFrame and flyAllowed <= 0 and (not balloons) then
-			FlyAnywayProgressBarFrame.Visible = true
-			FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(1, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0, true)
-		end
-	
-		groundtime = tick() + (2.6 + (entityLibrary.groundTick - tick()))
-		FlyCoroutine = coroutine.create(function()
-			repeat
-				repeat task.wait() until (groundtime - tick()) < 0.6 and not onground
-				flyAllowed = ((lplr.Character and lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
-				if (not Fly.Enabled) then break end
-				local Flytppos = -99999
-				if flyAllowed <= 0 and FlyTP.Enabled and entityLibrary.isAlive then
-					local ray = workspace:Raycast(entityLibrary.character.HumanoidRootPart.Position, Vector3.new(0, -1000, 0), store.blockRaycast)
-					if ray then
-						Flytppos = entityLibrary.character.HumanoidRootPart.Position.Y
-						local args = {entityLibrary.character.HumanoidRootPart.CFrame:GetComponents()}
-						args[2] = ray.Position.Y + (entityLibrary.character.HumanoidRootPart.Size.Y / 2) + entityLibrary.character.Humanoid.HipHeight
-						entityLibrary.character.HumanoidRootPart.CFrame = CFrame.new(unpack(args))
-						task.wait(0.12)
-						if (not Fly.Enabled) then break end
-						flyAllowed = ((lplr.Character and lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
-						if flyAllowed <= 0 and Flytppos ~= -99999 and entityLibrary.isAlive then
-							local args = {entityLibrary.character.HumanoidRootPart.CFrame:GetComponents()}
-							args[2] = Flytppos
-							entityLibrary.character.HumanoidRootPart.CFrame = CFrame.new(unpack(args))
-						end
-					end
-				end
-			until (not Fly.Enabled)
-		end)
-		coroutine.resume(FlyCoroutine)
-	
-		RunLoops:BindToHeartbeat("Fly", function(delta)
-			if GuiLibrary.ObjectsThatCanBeSaved["Lobby CheckToggle"].Api.Enabled then
-				if bedwars.matchState == 0 then return end
-			end
-			if entityLibrary.isAlive then
-				local playerMass = (entityLibrary.character.HumanoidRootPart:GetMass() - 1.4) * (delta * 100)
-				flyAllowed = ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
-				playerMass = playerMass + (flyAllowed > 0 and 4 or 0) * (tick() % 0.4 < 0.2 and -1 or 1)
-	
-				if FlyAnywayProgressBarFrame then
-					FlyAnywayProgressBarFrame.Visible = flyAllowed <= 0
-					FlyAnywayProgressBarFrame.BackgroundColor3 = Color3.fromHSV(GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Hue, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Sat, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Value)
-					FlyAnywayProgressBarFrame.Frame.BackgroundColor3 = Color3.fromHSV(GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Hue, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Sat, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Value)
-				end
-	
-				if flyAllowed <= 0 then
-					local newray = getPlacedBlock(entityLibrary.character.HumanoidRootPart.Position + Vector3.new(0, (entityLibrary.character.Humanoid.HipHeight * -2) - 1, 0))
-					onground = newray and true or false
-					if lastonground ~= onground then
-						if (not onground) then
-							groundtime = tick() + (2.6 + (entityLibrary.groundTick - tick()))
-							if FlyAnywayProgressBarFrame then
-								FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(0, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, groundtime - tick(), true)
-							end
-						else
-							if FlyAnywayProgressBarFrame then
-								FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(1, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0, true)
-							end
-						end
-					end
-					if FlyAnywayProgressBarFrame then
-						FlyAnywayProgressBarFrame.TextLabel.Text = math.max(onground and 2.5 or math.floor((groundtime - tick()) * 10) / 10, 0).."s"
-					end
-					lastonground = onground
-				else
-					onground = true
-					lastonground = true
-				end
-	
-				local flyVelocity = entityLibrary.character.Humanoid.MoveDirection * (FlyMode.Value == "Normal" and FlySpeed.Value or 20)
-				entityLibrary.character.HumanoidRootPart.Velocity = flyVelocity + (Vector3.new(0, playerMass + (FlyUp and FlyVerticalSpeed.Value or 0) + (FlyDown and -FlyVerticalSpeed.Value or 0), 0))
-				if FlyMode.Value ~= "Normal" then
-					entityLibrary.character.HumanoidRootPart.CFrame = entityLibrary.character.HumanoidRootPart.CFrame + (entityLibrary.character.Humanoid.MoveDirection * ((FlySpeed.Value + getSpeed()) - 20)) * delta
-				end
-			end
-		end)
-		else
-		pcall(function() coroutine.close(FlyCoroutine) end)
-		autobankballoon = false
-		waitingforballoon = false
-		lastonground = nil
-		FlyUp = false
-		FlyDown = false
-		RunLoops:UnbindFromHeartbeat("Fly")
-		if FlyAnywayProgressBarFrame then
-			FlyAnywayProgressBarFrame.Visible = false
-		end
-		if FlyAutoPop.Enabled then
-			if entityLibrary.isAlive and lplr.Character:GetAttribute("InflatedBalloons") then
-				for i = 1, lplr.Character:GetAttribute("InflatedBalloons") do
-					olddeflate()
-				end
-			end
-		end
-		bedwars.BalloonController.deflateBalloon = olddeflate
-		olddeflate = nil
-	end
-		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	end)
-end
-coroutine.wrap(MXUQY_fake_script)()
-local function AUNKKXG_fake_script() -- GuiFrame.LocalScript 
+coroutine.wrap(YCHLRLH_fake_script)()
+local function ESUNFWF_fake_script() -- GuiFrame.LocalScript 
 	local script = Instance.new('LocalScript', GuiFrame)
 
 	local NotificationFrame = script.Parent.NotificaitonFrame
@@ -581,4 +369,4 @@ local function AUNKKXG_fake_script() -- GuiFrame.LocalScript
 	wait(2)
 	NotificationFrame.Visible = false
 end
-coroutine.wrap(AUNKKXG_fake_script)()
+coroutine.wrap(ESUNFWF_fake_script)()
