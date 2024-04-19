@@ -730,7 +730,7 @@ local function FWIJOOT_fake_script() -- AuditHacksFrame.ToggleVisibilityScript
 	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 	    if gameProcessedEvent then return end -- If the key press is already being used by the game, do nothing
 	    
-	    if input.KeyCode == Enum.KeyCode.L then
+	    if input.KeyCode == Enum.KeyCode.RightShift then
 	        toggleFrameVisibility()
 	    end
 	end)
