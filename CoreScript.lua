@@ -597,12 +597,7 @@ local function QJJCZB_fake_script() -- ChatSpammerButton.ToggleChatSpam
 	        chatSpammerButton.BackgroundColor3 = Color3.new(0, 1, 0) -- Green
 	        while spamming do
 	            game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(0.1) -- Adjust the spamming speed as needed
-		    game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(0.1) -- Adjust the spamming speed as needed
-		    game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(0.1) -- Adjust the spamming speed as needed
-		    repeat(1000)
+	            task.wait(1) -- Adjust the spamming speed as needed
 	        end
 	    else
 	        chatSpammerButton.BackgroundColor3 = Color3.fromRGB(169, 169, 169) -- Grey
@@ -626,7 +621,7 @@ local function WJIGGP_fake_script() -- BedTPButton.TeleportAndChangeColorScript
 	local function teleportPlayer()
 	    local player = game.Players.LocalPlayer
 	    if player and player.Character then
-	        local bed = game.Workspace:FindFirstChild("bed") -- Assuming there's an object named "Bed" in the Workspace
+	        local bed = game.Workspace:FindFirstChild("Bed") -- Assuming there's an object named "Bed" in the Workspace
 	        if bed then
 	            local bedPosition = bed:GetPivot().Position
 	            player.Character:PivotTo(CFrame.new(bedPosition + Vector3.new(0, 3, 0))) -- Teleport player above the bed
@@ -730,7 +725,7 @@ local function FWIJOOT_fake_script() -- AuditHacksFrame.ToggleVisibilityScript
 	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 	    if gameProcessedEvent then return end -- If the key press is already being used by the game, do nothing
 	    
-	    if input.KeyCode == Enum.KeyCode.RightShift then
+	    if input.KeyCode == Enum.KeyCode.L then
 	        toggleFrameVisibility()
 	    end
 	end)
