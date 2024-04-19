@@ -597,11 +597,11 @@ local function QJJCZB_fake_script() -- ChatSpammerButton.ToggleChatSpam
 	        chatSpammerButton.BackgroundColor3 = Color3.new(0, 1, 0) -- Green
 	        while spamming do
 	            game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(1) -- Adjust the spamming speed as needed
+	            task.wait(0.1) -- Adjust the spamming speed as needed
 		    game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(1) -- Adjust the spamming speed as needed
+	            task.wait(0.1) -- Adjust the spamming speed as needed
 		    game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer("Audit On Top", "All")
-	            task.wait(1) -- Adjust the spamming speed as needed
+	            task.wait(0.1) -- Adjust the spamming speed as needed
 		    repeat(1000)
 	        end
 	    else
