@@ -301,7 +301,7 @@ OpenGuiButton.TextSize = 27.000
 
 -- Scripts:
 
-local function DCPSKGU_fake_script() -- KillAuraButton.KillAuraActivationScript 
+local function UOSD_fake_script() -- KillAuraButton.KillAuraActivationScript 
 	local script = Instance.new('LocalScript', KillAuraButton)
 
 	local KillAuraButton = script.Parent
@@ -342,8 +342,8 @@ local function DCPSKGU_fake_script() -- KillAuraButton.KillAuraActivationScript
 	-- Connect the button click event to activate kill aura
 	KillAuraButton.MouseButton1Click:Connect(activateKillAura)
 end
-coroutine.wrap(DCPSKGU_fake_script)()
-local function FZWG_fake_script() -- SpeedButton.SpeedChangeScript 
+coroutine.wrap(UOSD_fake_script)()
+local function KHWPT_fake_script() -- SpeedButton.SpeedChangeScript 
 	local script = Instance.new('LocalScript', SpeedButton)
 
 	local speedButton = script.Parent -- Reference to the SpeedButton
@@ -359,8 +359,8 @@ local function FZWG_fake_script() -- SpeedButton.SpeedChangeScript
 	-- Connect the function to the button's click event
 	speedButton.MouseButton1Click:Connect(setSpeed)
 end
-coroutine.wrap(FZWG_fake_script)()
-local function SWVCVJ_fake_script() -- FlyButton.FlyButtonScript 
+coroutine.wrap(KHWPT_fake_script)()
+local function BFRGLCY_fake_script() -- FlyButton.FlyButtonScript 
 	local script = Instance.new('LocalScript', FlyButton)
 
 	local flyButton = script.Parent -- Reference to the FlyButton
@@ -398,8 +398,8 @@ local function SWVCVJ_fake_script() -- FlyButton.FlyButtonScript
 	-- Connect the button click event to the function
 	flyButton.MouseButton1Click:Connect(onFlyButtonClick)
 end
-coroutine.wrap(SWVCVJ_fake_script)()
-local function HUJPYLZ_fake_script() -- NoFallButton.NoFallLocalScript 
+coroutine.wrap(BFRGLCY_fake_script)()
+local function AYUSZOU_fake_script() -- NoFallButton.NoFallLocalScript 
 	local script = Instance.new('LocalScript', NoFallButton)
 
 	-- NoFallLocalScript
@@ -437,8 +437,8 @@ local function HUJPYLZ_fake_script() -- NoFallButton.NoFallLocalScript
 	-- Button click event
 	textButton.MouseButton1Click:Connect(enableNoFall)
 end
-coroutine.wrap(HUJPYLZ_fake_script)()
-local function LNGL_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
+coroutine.wrap(AYUSZOU_fake_script)()
+local function ESLOY_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
 	local script = Instance.new('LocalScript', ImageESPButton)
 
 	local button = script.Parent -- Reference to the button
@@ -519,8 +519,8 @@ local function LNGL_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServe
 	    end)
 	end)
 end
-coroutine.wrap(LNGL_fake_script)()
-local function TFLXHSS_fake_script() -- ESPButton.ToggleESP 
+coroutine.wrap(ESLOY_fake_script)()
+local function JVPC_fake_script() -- ESPButton.ToggleESP 
 	local script = Instance.new('LocalScript', ESPButton)
 
 	local ESPButton = script.Parent
@@ -546,8 +546,8 @@ local function TFLXHSS_fake_script() -- ESPButton.ToggleESP
 	-- Connect the toggleButton function to the button's click event
 	ESPButton.MouseButton1Click:Connect(toggleButton)
 end
-coroutine.wrap(TFLXHSS_fake_script)()
-local function DLENJD_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
+coroutine.wrap(JVPC_fake_script)()
+local function FSKA_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
 	local script = Instance.new('LocalScript', SkyBoxButton)
 
 	local skyBoxButton = script.Parent -- Reference to the button
@@ -598,8 +598,8 @@ local function DLENJD_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor
 	-- Connect the toggle function to the button click event
 	skyBoxButton.MouseButton1Click:Connect(toggleSkyAndButtonColor)
 end
-coroutine.wrap(DLENJD_fake_script)()
-local function KDQT_fake_script() -- ChatSpammerButton.ToggleChatSpam 
+coroutine.wrap(FSKA_fake_script)()
+local function PQSXU_fake_script() -- ChatSpammerButton.ToggleChatSpam 
 	local script = Instance.new('LocalScript', ChatSpammerButton)
 
 	local chatSpammerButton = script.Parent
@@ -620,8 +620,8 @@ local function KDQT_fake_script() -- ChatSpammerButton.ToggleChatSpam
 	
 	chatSpammerButton.MouseButton1Click:Connect(toggleSpam)
 end
-coroutine.wrap(KDQT_fake_script)()
-local function BZEQGN_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(PQSXU_fake_script)()
+local function CDTIV_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', BedTPButton)
 
 	local bedTPButton = script.Parent -- Reference to the button that will teleport the player and change its color
@@ -651,8 +651,8 @@ local function BZEQGN_fake_script() -- BedTPButton.TeleportAndChangeColorScript
 	    teleportPlayer()
 	end)
 end
-coroutine.wrap(BZEQGN_fake_script)()
-local function NJFPAAH_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(CDTIV_fake_script)()
+local function LFEUYN_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', PlayerTPButton)
 
 	local teleportButton = script.Parent -- Reference to the TextButton
@@ -690,8 +690,8 @@ local function NJFPAAH_fake_script() -- PlayerTPButton.TeleportAndChangeColorScr
 	
 	teleportButton.MouseButton1Click:Connect(onButtonClick) -- Connect the click event to the function
 end
-coroutine.wrap(NJFPAAH_fake_script)()
-local function BSGBVIJ_fake_script() -- BodyguardButton.LocalScript 
+coroutine.wrap(LFEUYN_fake_script)()
+local function IZUQZ_fake_script() -- BodyguardButton.LocalScript 
 	local script = Instance.new('LocalScript', BodyguardButton)
 
 	local button = script.Parent
@@ -709,8 +709,8 @@ local function BSGBVIJ_fake_script() -- BodyguardButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(BSGBVIJ_fake_script)()
-local function GXMQCHC_fake_script() -- PL50Button.LocalScript 
+coroutine.wrap(IZUQZ_fake_script)()
+local function HYLSWOL_fake_script() -- PL50Button.LocalScript 
 	local script = Instance.new('LocalScript', PL50Button)
 
 	local button = script.Parent
@@ -720,8 +720,8 @@ local function GXMQCHC_fake_script() -- PL50Button.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(GXMQCHC_fake_script)()
-local function KCXAD_fake_script() -- OpenGuiButton.LocalScript 
+coroutine.wrap(HYLSWOL_fake_script)()
+local function TVICWR_fake_script() -- OpenGuiButton.LocalScript 
 	local script = Instance.new('LocalScript', OpenGuiButton)
 
 	local button = script.Parent -- Replace with the path to your button
@@ -739,8 +739,8 @@ local function KCXAD_fake_script() -- OpenGuiButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(KCXAD_fake_script)()
-local function TSOV_fake_script() -- AuditGui.LocalScript 
+coroutine.wrap(TVICWR_fake_script)()
+local function EJEITO_fake_script() -- AuditGui.LocalScript 
 	local script = Instance.new('LocalScript', AuditGui)
 
 	local NotificationFrame = script.Parent.NotificationFrame
@@ -751,4 +751,28 @@ local function TSOV_fake_script() -- AuditGui.LocalScript
 	wait(2)
 	NotificationFrame.Visible = false
 end
-coroutine.wrap(TSOV_fake_script)()
+coroutine.wrap(EJEITO_fake_script)()
+local function PDLEEW_fake_script() -- AuditGui.LocalScript 
+	local script = Instance.new('LocalScript', AuditGui)
+
+	workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(x)
+		if x and x:FindFirstChild("Handle") then
+			if string.find(x.Name:lower(), 'sword') then
+				x.Handle.Material = "ForceField"
+				x.Handle.MeshId = "rbxassetid://13471207377"
+				x.Handle.BrickColor = BrickColor.new("Hot pink")
+			end
+		end
+	end)
+	
+	workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(x)
+		if x and x:FindFirstChild("Handle") then
+			if string.find(x.Name:lower(), 'wool') then
+				x.Handle.Material = "ForceField"
+				x.Handle.MeshId = "rbxassetid://13471207377"
+				x.Handle.BrickColor = BrickColor.new("Hot pink")
+			end
+		end
+	end)
+end
+coroutine.wrap(PDLEEW_fake_script)()
