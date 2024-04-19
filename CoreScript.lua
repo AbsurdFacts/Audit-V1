@@ -301,7 +301,7 @@ OpenGuiButton.TextSize = 27.000
 
 -- Scripts:
 
-local function UOSD_fake_script() -- KillAuraButton.KillAuraActivationScript 
+local function NYQT_fake_script() -- KillAuraButton.KillAuraActivationScript 
 	local script = Instance.new('LocalScript', KillAuraButton)
 
 	local KillAuraButton = script.Parent
@@ -342,8 +342,8 @@ local function UOSD_fake_script() -- KillAuraButton.KillAuraActivationScript
 	-- Connect the button click event to activate kill aura
 	KillAuraButton.MouseButton1Click:Connect(activateKillAura)
 end
-coroutine.wrap(UOSD_fake_script)()
-local function KHWPT_fake_script() -- SpeedButton.SpeedChangeScript 
+coroutine.wrap(NYQT_fake_script)()
+local function FYNY_fake_script() -- SpeedButton.SpeedChangeScript 
 	local script = Instance.new('LocalScript', SpeedButton)
 
 	local speedButton = script.Parent -- Reference to the SpeedButton
@@ -359,47 +359,428 @@ local function KHWPT_fake_script() -- SpeedButton.SpeedChangeScript
 	-- Connect the function to the button's click event
 	speedButton.MouseButton1Click:Connect(setSpeed)
 end
-coroutine.wrap(KHWPT_fake_script)()
-local function BFRGLCY_fake_script() -- FlyButton.FlyButtonScript 
+coroutine.wrap(FYNY_fake_script)()
+local function KSRYIAD_fake_script() -- FlyButton.FlyButtonScript 
 	local script = Instance.new('LocalScript', FlyButton)
 
 	local flyButton = script.Parent -- Reference to the FlyButton
+	local entityLibrary = --This watermark is used to delete the file if its cached, remove it to make the file persist after commits.
+		local entity = {
+			entityList = {},
+			entityConnections = {},
+			entityPlayerConnections = {},
+			entityIds = {},
+			isAlive = false,
+			character = {
+				Head = {},
+				Humanoid = {},
+				HumanoidRootPart = {}
+			}
+		}
+	local players = game:GetService("Players")
+	local httpservice = game:GetService("HttpService")
+	local lplr = players.LocalPlayer
+	local entityadded = Instance.new("BindableEvent")
+	local entityremoved = Instance.new("BindableEvent")
+	local entityupdated = Instance.new("BindableEvent")
 	
-	-- Function to enable flying for the player
-	local function enableFlying(player)
-	    local character = player.Character or player.CharacterAdded:Wait()
-	    local humanoid = character:FindFirstChildOfClass("Humanoid")
+	do
+		entity.entityAddedEvent = {
+			Connect = function(self, func)
+				return entityadded.Event:Connect(func)
+			end,
+			connect = function(self, func)
+				return entityadded.Event:Connect(func)
+			end,
+			Fire = function(self, ...)
+				entityadded:Fire(...)
+			end,
+		}
+		entity.entityRemovedEvent = {
+			Connect = function(self, func)
+				return entityremoved.Event:Connect(func)
+			end,
+			connect = function(self, func)
+				return entityremoved.Event:Connect(func)
+			end,
+			Fire = function(self, ...)
+				entityremoved:Fire(...)
+			end,
+		}
+		entity.entityUpdatedEvent = {
+			Connect = function(self, func)
+				return entityupdated.Event:Connect(func)
+			end,
+			connect = function(self, func)
+				return entityupdated.Event:Connect(func)
+			end,
+			Fire = function(self, ...)
+				entityupdated:Fire(...)
+			end,
+		}
 	
-	    if humanoid then
-	        -- Create a BodyVelocity object if it doesn't exist to simulate flying
-	        local bodyVelocity = character:FindFirstChild("BodyVelocity") or Instance.new("BodyVelocity")
-	        bodyVelocity.Velocity = Vector3.new(0, 50, 0) -- Adjust the Y value to change the flying speed
-	        bodyVelocity.MaxForce = Vector3.new(400000, 400000, 400000) -- High max force to ensure movement
-	        bodyVelocity.Parent = character
+		entity.isPlayerTargetable = function(plr)
+			if (not lplr.Team) then return true end
+			if (not plr.Team) then return true end
+			if plr.Team ~= lplr.Team then return true end
+			return #plr.Team:GetPlayers() == #players:GetPlayers()
+		end
 	
-	        -- Remove the BodyVelocity after 5 seconds to stop flying
-	        task.wait(5)
-	        bodyVelocity:Destroy()
-	    end
+		entity.getEntityFromPlayer = function(char)
+			for i,v in next, entity.entityList do
+				if v.Player == char then 
+					return i, v
+				end
+			end
+		end
+	
+		entity.removeEntity = function(obj)
+			local tableIndex, ent = entity.getEntityFromPlayer(obj)
+			if tableIndex then
+				entity.entityRemovedEvent:Fire(obj)
+				if ent.Connections then
+					for i,v in next, ent.Connections do 
+						if v.Disconnect then pcall(function() v:Disconnect() end) continue end
+						if v.disconnect then pcall(function() v:disconnect() end) continue end
+					end
+				end
+				entity.entityList[tableIndex] = nil
+			end
+		end
+	
+		entity.refreshEntity = function(plr, localcheck)
+			entity.removeEntity(plr)
+			entity.characterAdded(plr, plr.Character, localcheck, true)
+		end
+	
+		entity.getUpdateConnections = function(ent)
+			local hum = ent.Humanoid
+			return {
+				hum:GetPropertyChangedSignal("Health"),
+				hum:GetPropertyChangedSignal("MaxHealth")
+			}
+		end
+	
+		entity.characterAdded = function(plr, char, localcheck, refresh)
+			local id = httpservice:GenerateGUID(true)
+			entity.entityIds[plr.Name] = id
+			if char then
+				task.spawn(function()
+					local hum = char:FindFirstChildWhichIsA("Humanoid") or char:WaitForChild("Humanoid", 10)
+					local humrootpart = char:FindFirstChild("HumanoidRootPart") or hum and hum.RigType ~= Enum.HumanoidRigType.R6 and char.PrimaryPart
+					if not humrootpart then
+						for i = 1, 500 do 
+							humrootpart = char:FindFirstChild("HumanoidRootPart") or hum and hum.RigType ~= Enum.HumanoidRigType.R6 and char.PrimaryPart
+							if humrootpart then break end
+							task.wait(0.01)
+						end
+					end
+					local head = char:WaitForChild("Head", 10) or humrootpart and setmetatable({Name = "Head", Size = Vector3.new(1, 1, 1), Parent = char}, {__index = function(t, k) 
+						if k == 'Position' then
+							return humrootpart.Position + Vector3.new(0, 3, 0)
+						elseif k == 'CFrame' then 
+							return humrootpart.CFrame + Vector3.new(0, 3, 0)
+						end
+					end})
+					if entity.entityIds[plr.Name] ~= id then return end
+					if humrootpart and hum and head then
+						local childremoved
+						local newent
+						if localcheck then
+							entity.isAlive = true
+							entity.character.Head = head
+							entity.character.Humanoid = hum
+							entity.character.HumanoidRootPart = humrootpart
+						else
+							newent = {
+								Player = plr,
+								Character = char,
+								HumanoidRootPart = humrootpart,
+								RootPart = humrootpart,
+								Head = head,
+								Humanoid = hum,
+								Targetable = entity.isPlayerTargetable(plr),
+								Team = plr.Team,
+								Connections = {}
+							}
+							for i, v in next, entity.getUpdateConnections(newent) do 
+								table.insert(newent.Connections, v:Connect(function() 
+									entity.entityUpdatedEvent:Fire(newent)
+								end))
+							end
+							table.insert(entity.entityList, newent)
+							entity.entityAddedEvent:Fire(newent)
+						end
+						childremoved = char.ChildRemoved:Connect(function(part)
+							if part == humrootpart or part == hum or part == head then
+								childremoved:Disconnect()
+								if localcheck then
+									entity.isAlive = false
+								else
+									entity.removeEntity(plr)
+								end
+							end
+						end)
+						if newent then 
+							table.insert(newent.Connections, childremoved)
+						end
+						table.insert(entity.entityConnections, childremoved)
+					end
+				end)
+			end
+		end
+	
+		entity.entityAdded = function(plr, localcheck, custom)
+			table.insert(entity.entityConnections, plr:GetPropertyChangedSignal("Character"):Connect(function()
+				if plr.Character then
+					entity.refreshEntity(plr, localcheck)
+				else
+					if localcheck then
+						entity.isAlive = false
+					else
+						entity.removeEntity(plr)
+					end
+				end
+			end))
+			table.insert(entity.entityConnections, plr:GetPropertyChangedSignal("Team"):Connect(function()
+				for i = 1, #entity.entityList do
+					local v = entity.entityList[i]
+					if v and v.Targetable ~= entity.isPlayerTargetable(v.Player) then 
+						entity.refreshEntity(v.Player)
+					end
+				end 
+				if localcheck then
+					entity.fullEntityRefresh()
+				else
+					entity.refreshEntity(plr, localcheck)
+				end
+			end))
+			if plr.Character then
+				task.spawn(entity.refreshEntity, plr, localcheck)
+			end
+		end
+	
+		entity.fullEntityRefresh = function()
+			entity.selfDestruct()
+			for i,v in next, entity.entityIds do entity.entityIds[i] = nil end
+			for i,v in next, players:GetPlayers() do entity.entityAdded(v, v == lplr) end
+			table.insert(entity.entityConnections, players.PlayerAdded:Connect(function(v) entity.entityAdded(v, v == lplr) end))
+			table.insert(entity.entityConnections, players.PlayerRemoving:Connect(function(v) entity.removeEntity(v) end))
+		end
+	
+		entity.selfDestruct = function()
+			for i,v in next, entity.entityConnections do 
+				if v.Disconnect then pcall(function() v:Disconnect() end) continue end
+				if v.disconnect then pcall(function() v:disconnect() end) continue end
+			end
+			for i,v in next, entity.entityIds do entity.entityIds[i] = nil end
+			for i,v in next, entity.entityList do entity.removeEntity(v.Player) end
+		end
 	end
+	
+	return entity
+	
 	
 	-- Function to handle the button click
 	local function onFlyButtonClick()
-	    local Players = game:GetService("Players")
-	    Players.PlayerAdded:Connect(function(player)
-	        enableFlying(player)
-	    end)
+		local Fly = {Enabled = false}
+		local FlyMode = {Value = "CFrame"}
+		local FlyVerticalSpeed = {Value = 40}
+		local FlyVertical = {Enabled = true}
+		local FlyAutoPop = {Enabled = true}
+		local FlyAnyway = {Enabled = false}
+		local FlyAnywayProgressBar = {Enabled = false}
+		local FlyDamageAnimation = {Enabled = false}
+		local FlyTP = {Enabled = false}
+		local FlyAnywayProgressBarFrame
+		local olddeflate
+		local FlyUp = false
+		local FlyDown = false
+		local FlyCoroutine
+		local groundtime = tick()
+		local onground = false
+		local lastonground = false
+		local alternatelist = {"Normal", "AntiCheat A", "AntiCheat B"}
 	
-	    for _, player in Players:GetPlayers() do
-	        enableFlying(player)
-	    end
+		local function inflateBalloon()
+			if not Fly.Enabled then return end
+			if entityLibrary.isAlive and (lplr.Character:GetAttribute("InflatedBalloons") or 0) < 1 then
+				autobankballoon = true
+				if getItem("balloon") then
+					bedwars.BalloonController:inflateBalloon()
+					return true
+				end
+			end
+			return false
+		end
+		
+		olddeflate = bedwars.BalloonController.deflateBalloon
+		bedwars.BalloonController.deflateBalloon = function() end
+	
+		table.insert(Fly.Connections, inputService.InputBegan:Connect(function(input1)
+			if FlyVertical.Enabled and inputService:GetFocusedTextBox() == nil then
+				if input1.KeyCode == Enum.KeyCode.Space or input1.KeyCode == Enum.KeyCode.ButtonA then
+					FlyUp = true
+				end
+				if input1.KeyCode == Enum.KeyCode.LeftShift or input1.KeyCode == Enum.KeyCode.ButtonL2 then
+					FlyDown = true
+				end
+			end
+		end))
+		table.insert(Fly.Connections, inputService.InputEnded:Connect(function(input1)
+			if input1.KeyCode == Enum.KeyCode.Space or input1.KeyCode == Enum.KeyCode.ButtonA then
+				FlyUp = false
+			end
+			if input1.KeyCode == Enum.KeyCode.LeftShift or input1.KeyCode == Enum.KeyCode.ButtonL2 then
+				FlyDown = false
+			end
+		end))
+		if inputService.TouchEnabled then
+			pcall(function()
+				local jumpButton = lplr.PlayerGui.TouchGui.TouchControlFrame.JumpButton
+				table.insert(Fly.Connections, jumpButton:GetPropertyChangedSignal("ImageRectOffset"):Connect(function()
+					FlyUp = jumpButton.ImageRectOffset.X == 146
+				end))
+				FlyUp = jumpButton.ImageRectOffset.X == 146
+			end)
+		end
+		table.insert(Fly.Connections, vapeEvents.BalloonPopped.Event:Connect(function(poppedTable)
+			if poppedTable.inflatedBalloon and poppedTable.inflatedBalloon:GetAttribute("BalloonOwner") == lplr.UserId then
+				lastonground = not onground
+				repeat task.wait() until (lplr.Character:GetAttribute("InflatedBalloons") or 0) <= 0 or not Fly.Enabled
+				inflateBalloon()
+			end
+		end))
+		table.insert(Fly.Connections, vapeEvents.AutoBankBalloon.Event:Connect(function()
+			repeat task.wait() until getItem("balloon")
+			inflateBalloon()
+		end))
+	
+		local balloons
+		if entityLibrary.isAlive and (not store.queueType:find("mega")) then
+			balloons = inflateBalloon()
+		end
+		local megacheck = store.queueType:find("mega") or store.queueType == "winter_event"
+	
+		task.spawn(function()
+			repeat task.wait() until store.queueType ~= "bedwars_test" or (not Fly.Enabled)
+			if not Fly.Enabled then return end
+			megacheck = store.queueType:find("mega") or store.queueType == "winter_event"
+		end)
+	
+		local flyAllowed = entityLibrary.isAlive and ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
+		if flyAllowed <= 0 and shared.damageanim and (not balloons) then
+			shared.damageanim()
+			bedwars.SoundManager:playSound(bedwars.SoundList["DAMAGE_"..math.random(1, 3)])
+		end
+	
+		if FlyAnywayProgressBarFrame and flyAllowed <= 0 and (not balloons) then
+			FlyAnywayProgressBarFrame.Visible = true
+			FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(1, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0, true)
+		end
+	
+		groundtime = tick() + (2.6 + (entityLibrary.groundTick - tick()))
+		FlyCoroutine = coroutine.create(function()
+			repeat
+				repeat task.wait() until (groundtime - tick()) < 0.6 and not onground
+				flyAllowed = ((lplr.Character and lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
+				if (not Fly.Enabled) then break end
+				local Flytppos = -99999
+				if flyAllowed <= 0 and FlyTP.Enabled and entityLibrary.isAlive then
+					local ray = workspace:Raycast(entityLibrary.character.HumanoidRootPart.Position, Vector3.new(0, -1000, 0), store.blockRaycast)
+					if ray then
+						Flytppos = entityLibrary.character.HumanoidRootPart.Position.Y
+						local args = {entityLibrary.character.HumanoidRootPart.CFrame:GetComponents()}
+						args[2] = ray.Position.Y + (entityLibrary.character.HumanoidRootPart.Size.Y / 2) + entityLibrary.character.Humanoid.HipHeight
+						entityLibrary.character.HumanoidRootPart.CFrame = CFrame.new(unpack(args))
+						task.wait(0.12)
+						if (not Fly.Enabled) then break end
+						flyAllowed = ((lplr.Character and lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
+						if flyAllowed <= 0 and Flytppos ~= -99999 and entityLibrary.isAlive then
+							local args = {entityLibrary.character.HumanoidRootPart.CFrame:GetComponents()}
+							args[2] = Flytppos
+							entityLibrary.character.HumanoidRootPart.CFrame = CFrame.new(unpack(args))
+						end
+					end
+				end
+			until (not Fly.Enabled)
+		end)
+		coroutine.resume(FlyCoroutine)
+	
+		RunLoops:BindToHeartbeat("Fly", function(delta)
+			if GuiLibrary.ObjectsThatCanBeSaved["Lobby CheckToggle"].Api.Enabled then
+				if bedwars.matchState == 0 then return end
+			end
+			if entityLibrary.isAlive then
+				local playerMass = (entityLibrary.character.HumanoidRootPart:GetMass() - 1.4) * (delta * 100)
+				flyAllowed = ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2 or megacheck) and 1 or 0
+				playerMass = playerMass + (flyAllowed > 0 and 4 or 0) * (tick() % 0.4 < 0.2 and -1 or 1)
+	
+				if FlyAnywayProgressBarFrame then
+					FlyAnywayProgressBarFrame.Visible = flyAllowed <= 0
+					FlyAnywayProgressBarFrame.BackgroundColor3 = Color3.fromHSV(GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Hue, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Sat, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Value)
+					FlyAnywayProgressBarFrame.Frame.BackgroundColor3 = Color3.fromHSV(GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Hue, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Sat, GuiLibrary.ObjectsThatCanBeSaved["Gui ColorSliderColor"].Api.Value)
+				end
+	
+				if flyAllowed <= 0 then
+					local newray = getPlacedBlock(entityLibrary.character.HumanoidRootPart.Position + Vector3.new(0, (entityLibrary.character.Humanoid.HipHeight * -2) - 1, 0))
+					onground = newray and true or false
+					if lastonground ~= onground then
+						if (not onground) then
+							groundtime = tick() + (2.6 + (entityLibrary.groundTick - tick()))
+							if FlyAnywayProgressBarFrame then
+								FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(0, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, groundtime - tick(), true)
+							end
+						else
+							if FlyAnywayProgressBarFrame then
+								FlyAnywayProgressBarFrame.Frame:TweenSize(UDim2.new(1, 0, 0, 20), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0, true)
+							end
+						end
+					end
+					if FlyAnywayProgressBarFrame then
+						FlyAnywayProgressBarFrame.TextLabel.Text = math.max(onground and 2.5 or math.floor((groundtime - tick()) * 10) / 10, 0).."s"
+					end
+					lastonground = onground
+				else
+					onground = true
+					lastonground = true
+				end
+	
+				local flyVelocity = entityLibrary.character.Humanoid.MoveDirection * (FlyMode.Value == "Normal" and FlySpeed.Value or 20)
+				entityLibrary.character.HumanoidRootPart.Velocity = flyVelocity + (Vector3.new(0, playerMass + (FlyUp and FlyVerticalSpeed.Value or 0) + (FlyDown and -FlyVerticalSpeed.Value or 0), 0))
+				if FlyMode.Value ~= "Normal" then
+					entityLibrary.character.HumanoidRootPart.CFrame = entityLibrary.character.HumanoidRootPart.CFrame + (entityLibrary.character.Humanoid.MoveDirection * ((FlySpeed.Value + getSpeed()) - 20)) * delta
+				end
+			end
+		end)
+		else
+		pcall(function() coroutine.close(FlyCoroutine) end)
+		autobankballoon = false
+		waitingforballoon = false
+		lastonground = nil
+		FlyUp = false
+		FlyDown = false
+		RunLoops:UnbindFromHeartbeat("Fly")
+		if FlyAnywayProgressBarFrame then
+			FlyAnywayProgressBarFrame.Visible = false
+		end
+		if FlyAutoPop.Enabled then
+			if entityLibrary.isAlive and lplr.Character:GetAttribute("InflatedBalloons") then
+				for i = 1, lplr.Character:GetAttribute("InflatedBalloons") do
+					olddeflate()
+				end
+			end
+		end
+		bedwars.BalloonController.deflateBalloon = olddeflate
+		olddeflate = nil
+	end
 	end
 	
 	-- Connect the button click event to the function
 	flyButton.MouseButton1Click:Connect(onFlyButtonClick)
 end
-coroutine.wrap(BFRGLCY_fake_script)()
-local function AYUSZOU_fake_script() -- NoFallButton.NoFallLocalScript 
+coroutine.wrap(KSRYIAD_fake_script)()
+local function PDAOMIP_fake_script() -- NoFallButton.NoFallLocalScript 
 	local script = Instance.new('LocalScript', NoFallButton)
 
 	-- NoFallLocalScript
@@ -437,8 +818,8 @@ local function AYUSZOU_fake_script() -- NoFallButton.NoFallLocalScript
 	-- Button click event
 	textButton.MouseButton1Click:Connect(enableNoFall)
 end
-coroutine.wrap(AYUSZOU_fake_script)()
-local function ESLOY_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
+coroutine.wrap(PDAOMIP_fake_script)()
+local function GRCDUZJ_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
 	local script = Instance.new('LocalScript', ImageESPButton)
 
 	local button = script.Parent -- Reference to the button
@@ -519,8 +900,8 @@ local function ESLOY_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServ
 	    end)
 	end)
 end
-coroutine.wrap(ESLOY_fake_script)()
-local function JVPC_fake_script() -- ESPButton.ToggleESP 
+coroutine.wrap(GRCDUZJ_fake_script)()
+local function ROYCW_fake_script() -- ESPButton.ToggleESP 
 	local script = Instance.new('LocalScript', ESPButton)
 
 	local ESPButton = script.Parent
@@ -546,8 +927,8 @@ local function JVPC_fake_script() -- ESPButton.ToggleESP
 	-- Connect the toggleButton function to the button's click event
 	ESPButton.MouseButton1Click:Connect(toggleButton)
 end
-coroutine.wrap(JVPC_fake_script)()
-local function FSKA_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
+coroutine.wrap(ROYCW_fake_script)()
+local function AGGB_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
 	local script = Instance.new('LocalScript', SkyBoxButton)
 
 	local skyBoxButton = script.Parent -- Reference to the button
@@ -598,8 +979,8 @@ local function FSKA_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor
 	-- Connect the toggle function to the button click event
 	skyBoxButton.MouseButton1Click:Connect(toggleSkyAndButtonColor)
 end
-coroutine.wrap(FSKA_fake_script)()
-local function PQSXU_fake_script() -- ChatSpammerButton.ToggleChatSpam 
+coroutine.wrap(AGGB_fake_script)()
+local function LRVMRH_fake_script() -- ChatSpammerButton.ToggleChatSpam 
 	local script = Instance.new('LocalScript', ChatSpammerButton)
 
 	local chatSpammerButton = script.Parent
@@ -620,8 +1001,8 @@ local function PQSXU_fake_script() -- ChatSpammerButton.ToggleChatSpam
 	
 	chatSpammerButton.MouseButton1Click:Connect(toggleSpam)
 end
-coroutine.wrap(PQSXU_fake_script)()
-local function CDTIV_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(LRVMRH_fake_script)()
+local function HXPY_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', BedTPButton)
 
 	local bedTPButton = script.Parent -- Reference to the button that will teleport the player and change its color
@@ -651,8 +1032,8 @@ local function CDTIV_fake_script() -- BedTPButton.TeleportAndChangeColorScript
 	    teleportPlayer()
 	end)
 end
-coroutine.wrap(CDTIV_fake_script)()
-local function LFEUYN_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(HXPY_fake_script)()
+local function GGEQ_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', PlayerTPButton)
 
 	local teleportButton = script.Parent -- Reference to the TextButton
@@ -690,8 +1071,8 @@ local function LFEUYN_fake_script() -- PlayerTPButton.TeleportAndChangeColorScri
 	
 	teleportButton.MouseButton1Click:Connect(onButtonClick) -- Connect the click event to the function
 end
-coroutine.wrap(LFEUYN_fake_script)()
-local function IZUQZ_fake_script() -- BodyguardButton.LocalScript 
+coroutine.wrap(GGEQ_fake_script)()
+local function TGOD_fake_script() -- BodyguardButton.LocalScript 
 	local script = Instance.new('LocalScript', BodyguardButton)
 
 	local button = script.Parent
@@ -709,8 +1090,8 @@ local function IZUQZ_fake_script() -- BodyguardButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(IZUQZ_fake_script)()
-local function HYLSWOL_fake_script() -- PL50Button.LocalScript 
+coroutine.wrap(TGOD_fake_script)()
+local function XECBWX_fake_script() -- PL50Button.LocalScript 
 	local script = Instance.new('LocalScript', PL50Button)
 
 	local button = script.Parent
@@ -720,8 +1101,8 @@ local function HYLSWOL_fake_script() -- PL50Button.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(HYLSWOL_fake_script)()
-local function TVICWR_fake_script() -- OpenGuiButton.LocalScript 
+coroutine.wrap(XECBWX_fake_script)()
+local function GRHAUJF_fake_script() -- OpenGuiButton.LocalScript 
 	local script = Instance.new('LocalScript', OpenGuiButton)
 
 	local button = script.Parent -- Replace with the path to your button
@@ -739,8 +1120,8 @@ local function TVICWR_fake_script() -- OpenGuiButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(TVICWR_fake_script)()
-local function EJEITO_fake_script() -- AuditGui.LocalScript 
+coroutine.wrap(GRHAUJF_fake_script)()
+local function RCBTZN_fake_script() -- AuditGui.LocalScript 
 	local script = Instance.new('LocalScript', AuditGui)
 
 	local NotificationFrame = script.Parent.NotificationFrame
@@ -751,8 +1132,8 @@ local function EJEITO_fake_script() -- AuditGui.LocalScript
 	wait(2)
 	NotificationFrame.Visible = false
 end
-coroutine.wrap(EJEITO_fake_script)()
-local function PDLEEW_fake_script() -- AuditGui.LocalScript 
+coroutine.wrap(RCBTZN_fake_script)()
+local function GPBSCM_fake_script() -- AuditGui.LocalScript 
 	local script = Instance.new('LocalScript', AuditGui)
 
 	workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(x)
@@ -767,7 +1148,7 @@ local function PDLEEW_fake_script() -- AuditGui.LocalScript
 	
 	workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(x)
 		if x and x:FindFirstChild("Handle") then
-			if string.find(x.Name:lower(), 'wool') then
+			if string.find(x.Name:lower(), 'pickaxe') then
 				x.Handle.Material = "ForceField"
 				x.Handle.MeshId = "rbxassetid://13471207377"
 				x.Handle.BrickColor = BrickColor.new("Hot pink")
@@ -775,4 +1156,4 @@ local function PDLEEW_fake_script() -- AuditGui.LocalScript
 		end
 	end)
 end
-coroutine.wrap(PDLEEW_fake_script)()
+coroutine.wrap(GPBSCM_fake_script)()
