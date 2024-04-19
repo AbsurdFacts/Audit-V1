@@ -26,6 +26,7 @@ local BedTPButton = Instance.new("TextButton")
 local PlayerTPButton = Instance.new("TextButton")
 local BodyguardButton = Instance.new("TextButton")
 local PL50Button = Instance.new("TextButton")
+local OpenGuiButton = Instance.new("TextButton")
 
 --Properties:
 
@@ -285,9 +286,22 @@ PL50Button.Text = "PlayerLevel50"
 PL50Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 PL50Button.TextSize = 29.000
 
+OpenGuiButton.Name = "OpenGuiButton"
+OpenGuiButton.Parent = AuditGui
+OpenGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+OpenGuiButton.BackgroundTransparency = 0.550
+OpenGuiButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+OpenGuiButton.BorderSizePixel = 0
+OpenGuiButton.Position = UDim2.new(0.775346875, 0, 0.393377483, 0)
+OpenGuiButton.Size = UDim2.new(0, 200, 0, 50)
+OpenGuiButton.Font = Enum.Font.Unknown
+OpenGuiButton.Text = "AUDIT"
+OpenGuiButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+OpenGuiButton.TextSize = 27.000
+
 -- Scripts:
 
-local function EOZYBTK_fake_script() -- KillAuraButton.KillAuraActivationScript 
+local function DCPSKGU_fake_script() -- KillAuraButton.KillAuraActivationScript 
 	local script = Instance.new('LocalScript', KillAuraButton)
 
 	local KillAuraButton = script.Parent
@@ -328,8 +342,8 @@ local function EOZYBTK_fake_script() -- KillAuraButton.KillAuraActivationScript
 	-- Connect the button click event to activate kill aura
 	KillAuraButton.MouseButton1Click:Connect(activateKillAura)
 end
-coroutine.wrap(EOZYBTK_fake_script)()
-local function GWEFC_fake_script() -- SpeedButton.SpeedChangeScript 
+coroutine.wrap(DCPSKGU_fake_script)()
+local function FZWG_fake_script() -- SpeedButton.SpeedChangeScript 
 	local script = Instance.new('LocalScript', SpeedButton)
 
 	local speedButton = script.Parent -- Reference to the SpeedButton
@@ -345,8 +359,8 @@ local function GWEFC_fake_script() -- SpeedButton.SpeedChangeScript
 	-- Connect the function to the button's click event
 	speedButton.MouseButton1Click:Connect(setSpeed)
 end
-coroutine.wrap(GWEFC_fake_script)()
-local function XYIQ_fake_script() -- FlyButton.FlyButtonScript 
+coroutine.wrap(FZWG_fake_script)()
+local function SWVCVJ_fake_script() -- FlyButton.FlyButtonScript 
 	local script = Instance.new('LocalScript', FlyButton)
 
 	local flyButton = script.Parent -- Reference to the FlyButton
@@ -384,8 +398,8 @@ local function XYIQ_fake_script() -- FlyButton.FlyButtonScript
 	-- Connect the button click event to the function
 	flyButton.MouseButton1Click:Connect(onFlyButtonClick)
 end
-coroutine.wrap(XYIQ_fake_script)()
-local function YRMUJTN_fake_script() -- NoFallButton.NoFallLocalScript 
+coroutine.wrap(SWVCVJ_fake_script)()
+local function HUJPYLZ_fake_script() -- NoFallButton.NoFallLocalScript 
 	local script = Instance.new('LocalScript', NoFallButton)
 
 	-- NoFallLocalScript
@@ -423,8 +437,8 @@ local function YRMUJTN_fake_script() -- NoFallButton.NoFallLocalScript
 	-- Button click event
 	textButton.MouseButton1Click:Connect(enableNoFall)
 end
-coroutine.wrap(YRMUJTN_fake_script)()
-local function PHOO_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
+coroutine.wrap(HUJPYLZ_fake_script)()
+local function LNGL_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServer 
 	local script = Instance.new('LocalScript', ImageESPButton)
 
 	local button = script.Parent -- Reference to the button
@@ -505,8 +519,8 @@ local function PHOO_fake_script() -- ImageESPButton.ToggleESPAndColorChangeServe
 	    end)
 	end)
 end
-coroutine.wrap(PHOO_fake_script)()
-local function JQNAG_fake_script() -- ESPButton.ToggleESP 
+coroutine.wrap(LNGL_fake_script)()
+local function TFLXHSS_fake_script() -- ESPButton.ToggleESP 
 	local script = Instance.new('LocalScript', ESPButton)
 
 	local ESPButton = script.Parent
@@ -532,8 +546,8 @@ local function JQNAG_fake_script() -- ESPButton.ToggleESP
 	-- Connect the toggleButton function to the button's click event
 	ESPButton.MouseButton1Click:Connect(toggleButton)
 end
-coroutine.wrap(JQNAG_fake_script)()
-local function MMQGG_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
+coroutine.wrap(TFLXHSS_fake_script)()
+local function DLENJD_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor 
 	local script = Instance.new('LocalScript', SkyBoxButton)
 
 	local skyBoxButton = script.Parent -- Reference to the button
@@ -584,8 +598,8 @@ local function MMQGG_fake_script() -- SkyBoxButton.ToggleSkyAndButtonColor
 	-- Connect the toggle function to the button click event
 	skyBoxButton.MouseButton1Click:Connect(toggleSkyAndButtonColor)
 end
-coroutine.wrap(MMQGG_fake_script)()
-local function QJJCZB_fake_script() -- ChatSpammerButton.ToggleChatSpam 
+coroutine.wrap(DLENJD_fake_script)()
+local function KDQT_fake_script() -- ChatSpammerButton.ToggleChatSpam 
 	local script = Instance.new('LocalScript', ChatSpammerButton)
 
 	local chatSpammerButton = script.Parent
@@ -606,8 +620,8 @@ local function QJJCZB_fake_script() -- ChatSpammerButton.ToggleChatSpam
 	
 	chatSpammerButton.MouseButton1Click:Connect(toggleSpam)
 end
-coroutine.wrap(QJJCZB_fake_script)()
-local function WJIGGP_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(KDQT_fake_script)()
+local function BZEQGN_fake_script() -- BedTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', BedTPButton)
 
 	local bedTPButton = script.Parent -- Reference to the button that will teleport the player and change its color
@@ -637,8 +651,8 @@ local function WJIGGP_fake_script() -- BedTPButton.TeleportAndChangeColorScript
 	    teleportPlayer()
 	end)
 end
-coroutine.wrap(WJIGGP_fake_script)()
-local function SJNWCDJ_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
+coroutine.wrap(BZEQGN_fake_script)()
+local function NJFPAAH_fake_script() -- PlayerTPButton.TeleportAndChangeColorScript 
 	local script = Instance.new('LocalScript', PlayerTPButton)
 
 	local teleportButton = script.Parent -- Reference to the TextButton
@@ -676,8 +690,8 @@ local function SJNWCDJ_fake_script() -- PlayerTPButton.TeleportAndChangeColorScr
 	
 	teleportButton.MouseButton1Click:Connect(onButtonClick) -- Connect the click event to the function
 end
-coroutine.wrap(SJNWCDJ_fake_script)()
-local function ZQPVY_fake_script() -- BodyguardButton.LocalScript 
+coroutine.wrap(NJFPAAH_fake_script)()
+local function BSGBVIJ_fake_script() -- BodyguardButton.LocalScript 
 	local script = Instance.new('LocalScript', BodyguardButton)
 
 	local button = script.Parent
@@ -695,8 +709,8 @@ local function ZQPVY_fake_script() -- BodyguardButton.LocalScript
 		end
 	end)
 end
-coroutine.wrap(ZQPVY_fake_script)()
-local function ITLF_fake_script() -- PL50Button.LocalScript 
+coroutine.wrap(BSGBVIJ_fake_script)()
+local function GXMQCHC_fake_script() -- PL50Button.LocalScript 
 	local script = Instance.new('LocalScript', PL50Button)
 
 	local button = script.Parent
@@ -706,28 +720,35 @@ local function ITLF_fake_script() -- PL50Button.LocalScript
 		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 end
-coroutine.wrap(ITLF_fake_script)()
-local function FWIJOOT_fake_script() -- AuditHacksFrame.ToggleVisibilityScript 
-	local script = Instance.new('LocalScript', AuditHacksFrame)
+coroutine.wrap(GXMQCHC_fake_script)()
+local function KCXAD_fake_script() -- OpenGuiButton.LocalScript 
+	local script = Instance.new('LocalScript', OpenGuiButton)
 
-	local UserInputService = game:GetService("UserInputService")
-	local frame = script.Parent -- Assuming the script is directly under the frame you want to toggle
+	local button = script.Parent -- Replace with the path to your button
+	local frame = script.Parent.Parent.AuditHacksFrame -- Replace with the path to your frame
+	local blurEffect = Instance.new("BlurEffect", game.Lighting) -- Creates a blur effect
+	blurEffect.Size = 0 -- Initial blur size set to 0 (no blur)
 	
-	-- Initially set the frame to not visible
-	frame.Visible = false
-	
-	-- Function to toggle the visibility of the frame
-	local function toggleFrameVisibility()
-	    frame.Visible = not frame.Visible
-	end
-	
-	-- Connect the function to the key press event
-	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-	    if gameProcessedEvent then return end -- If the key press is already being used by the game, do nothing
-	    
-	    if input.KeyCode == Enum.KeyCode.L then
-	        toggleFrameVisibility()
-	    end
+	button.MouseButton1Click:Connect(function()
+		if frame.Visible then
+			frame.Visible = false -- Hide the frame
+			blurEffect.Size = 0 -- Remove the blur effect
+		else
+			frame.Visible = true -- Show the frame
+			blurEffect.Size = 24 -- Set the blur size to create the blur effect
+		end
 	end)
 end
-coroutine.wrap(FWIJOOT_fake_script)()
+coroutine.wrap(KCXAD_fake_script)()
+local function TSOV_fake_script() -- AuditGui.LocalScript 
+	local script = Instance.new('LocalScript', AuditGui)
+
+	local NotificationFrame = script.Parent.NotificationFrame
+	local Notify2 = NotificationFrame.NotifyText
+	
+	NotificationFrame.Visible = true
+	Notify2.Text = "Audit V1 Loaded!"
+	wait(2)
+	NotificationFrame.Visible = false
+end
+coroutine.wrap(TSOV_fake_script)()
